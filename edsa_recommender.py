@@ -24,6 +24,7 @@
 
 	https://docs.streamlit.io/en/latest/
 
+
 """
 # Streamlit dependencies
 import streamlit as st
@@ -44,8 +45,8 @@ title_list = load_movie_titles('resources/data/movies.csv')
 def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
-    # you are welcome to add more options to enrich your app.
-    page_options = ["Recommender System","Solution Overview"]
+    # you are welcome to add more options to e nrich your app.
+    page_options = ["About Us","Recommender System","Solution Overview"]
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -106,6 +107,21 @@ def main():
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
+    
+
+    #---------------------------------------------------------------------
+
+    #-------------------THE NFORMATION OF THE COMPANY------------------
+    if page_selection == "About Us":
+        st.title("Explore AI")
+        st.write("General information of the company")
+        st.image('resources/imgs/EDSA_logo.png',use_column_width=True)
+    #-------------------------------------------------------------------
+    #--------------------Feedback-----------------------------------------
+    if page_selection == "Feedback":
+        st.title("Feedback")
+        st.write("Share your thoughts with us")
+        st.image('resources/imgs/EDSA_logo.png',use_column_width=True)
 
 
 if __name__ == '__main__':
