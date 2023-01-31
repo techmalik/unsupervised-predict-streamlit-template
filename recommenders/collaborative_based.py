@@ -47,7 +47,7 @@ rating_df = ratings_df.merge(movies_df, on='movieId')
 ratings_dfs = rating_df[['userId', 'movieId', 'title', 'rating']].copy()
 
 #pivot the table to turn movies as columns, users as index and ratings as values
-user_rating = new_df.pivot_table(index = ['userId'],columns=['title'], values='rating')
+user_rating = ratings_dfs.pivot_table(index = ['userId'],columns=['title'], values='rating')
 
 #remove movies that have less than 10 ratings
 user_rating = user_rating.dropna(thresh = 10).fillna(0)
