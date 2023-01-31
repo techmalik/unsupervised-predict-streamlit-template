@@ -116,6 +116,14 @@ def main():
         st.title("Introduction to the Movie Recommendation Architecture")
         st.image('resources/imgs/download.jpeg',use_column_width=True)
         st.header('Recommendation System explained')
+
+        t = st.text_area("Enter multiline text")
+
+        if t is not None:
+            textsplit = t.splitlines()
+
+            for x in textsplit:
+                st.write(x)
         st.text("Reading the local TV guides, renting CDs and DVDs, watching tapes or filmstrip projectors... Today, this is all a relic of the past. The largest movie libraries in the world are all digitized and transferred to online streaming services, like Netflix, HBO, or YouTube. Enhanced with AI-powered tools, these platforms can now assist us with probably the most difficult chore of all — picking a movie. Well, you don’t have to worry about that anymore. It’s officially showtime for machine learning to demonstrate its capabilities in the world of cinema as known today. Data scientists are all set to explore our behavioral patterns and the ones of the movies to build sophisticated predictive systems for true movie fans. A movie recommendation system, or a movie recommender system, is an ML-based approach to filtering or predicting the users’ film preferences based on their past choices and behavior. It’s an advanced filtration mechanism that predicts the possible movie choices of the concerned user and their preferences towards a domain-specific item, aka movie. We at Label Your Data have gathered the most up-to-date information about modern movie recommendation systems and how to build them using different ML solutions. We’ve also touched upon some of the most popular examples of these systems that help many movie fans today stay up to date with all the new releases as well as classics of the cinematography. Just grab your popcorn and enjoy the read!")
         
         st.header('Filtration Strategies for Movie Recommendation Systems')
@@ -140,7 +148,6 @@ def main():
 #contact -us 
         form = st.form('my_form')  
         form.slider('Inside the form')
-        st.slider('Outside the form')
 
         form.form_submit_button('Submit') 
 
