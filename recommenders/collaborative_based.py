@@ -43,14 +43,14 @@ ratings_df = pd.read_csv('resources/data/ratings.csv')
 ratings_df.drop(['timestamp'], axis=1,inplace=True)
 
 #merge the two csv files
-rating_df = ratings_df.merge(movies_df, on='movieId')
-ratings_dfs = rating_df[['userId', 'movieId', 'title', 'rating']].copy()
+#rating_df = ratings_df.merge(movies_df, on='movieId')
+#ratings_dfs = rating_df[['userId', 'movieId', 'title', 'rating']].copy()
 
 #pivot the table to turn movies as columns, users as index and ratings as values
-user_rating = ratings_dfs.pivot_table(index = ['userId'],columns=['title'], values='rating')
+#user_rating = ratings_dfs.pivot_table(index = ['userId'],columns=['title'], values='rating')
 
-#remove movies that have less than 10 ratings
-user_rating = user_rating.dropna(thresh = 10).fillna(0)
+#remove movies that have less than 10 ratings 
+ratings_df= ratings_df.dropna(thresh = 10).fillna(0)
 
 
 
@@ -74,7 +74,7 @@ def prediction_item(item_id):
     """
     # Data preprosessing
     reader = Reader(rating_scale=(0, 5))
-    load_df = Dataset.load_from_df(user_rating,reader)
+    load_df = Dataset.load_from_df(ratings_df,reader)
     a_train = load_df.build_full_trainset()
 
     predictions = []
@@ -132,9 +132,9 @@ def collab_model(movie_list,top_n=10):
 
     indices = pd.Series(movies_df['title'])
     movie_ids = pred_movies(movie_list)
-    df_init_users = user_rating[user_rating['userId']==movie_ids[0]]
+    df_init_users = ratings_df[ratings_df['userId']==movie_ids[0]]
     for i in movie_ids :
-        df_init_users=df_init_users.append(user_rating[user_rating['userId']==i])
+        df_init_users=df_init_users.append(ratings_df[ratings_df['userId']==i])
     # Getting the cosine similarity matrix
     cosine_sim = cosine_similarity(np.array(df_init_users), np.array(df_init_users))
     idx_1 = indices[indices == movie_list[0]].index[0]
