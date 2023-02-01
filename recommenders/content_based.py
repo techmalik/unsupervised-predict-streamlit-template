@@ -1,30 +1,21 @@
 """
-
     Content-based filtering for item recommendation.
-
     Author: Explore Data Science Academy.
-
     Note:
     ---------------------------------------------------------------------
     Please follow the instructions provided within the README.md file
     located within the root of this repository for guidance on how to use
     this script correctly.
-
     NB: You are required to extend this baseline algorithm to enable more
     efficient and accurate computation of recommendations.
-
     !! You must not change the name and signature (arguments) of the
     prediction function, `content_model` !!
-
     You must however change its contents (i.e. add your own content-based
     filtering algorithm), as well as altering/adding any other functions
     as part of your improvement.
-
     ---------------------------------------------------------------------
-
     Description: Provided within this file is a baseline content-based
     filtering algorithm for rating predictions on Movie data.
-
 """
 
 # Script dependencies
@@ -37,26 +28,38 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Importing data
 movies = pd.read_csv('resources/data/movies.csv', sep = ',')
 ratings = pd.read_csv('resources/data/ratings.csv')
+imdb_data = pd.read_csv('resources/data/imdb_data.csv')
 movies.dropna(inplace=True)
+    
+# Replace missing genres with genres from imdb_data
+for i in range(len(movies)):
+    if movies.iloc[i]['genres'] == "(no genres listed)":
+        movie_id = movies.iloc[i]['movieId']
+        imdb_index = imdb_data[imdb_data['movieId'] == movie_id].index.values
+        if len(imdb_index) > 0:
+            genres = imdb_data.iloc[imdb_index[0]]['plot_keywords']
+            movies.at[i, 'genres'] = genres
 
 def data_preprocessing(subset_size):
     """Prepare data for use within Content filtering algorithm.
-
     Parameters
     ----------
     subset_size : int
         Number of movies to use within the algorithm.
-
     Returns
     -------
     Pandas Dataframe
         Subset of movies selected for content-based filtering.
-
     """
-    # Split genre data into individual words.
-    movies['keyWords'] = movies['genres'].str.replace('|', ' ')
+    # Remove duplicates
+    movies.drop_duplicates(subset=['title'], keep='first', inplace=True)
+    # Lowercase genre data
+    movies['keyWords'] = movies['genres'].str.lower().str.replace('|', ' ')
+    # Handle missing values
+    movies.dropna(inplace=True)
     # Subset of the data
     movies_subset = movies[:subset_size]
+    
     return movies_subset
 
 # !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
@@ -64,19 +67,16 @@ def data_preprocessing(subset_size):
 def content_model(movie_list,top_n=10):
     """Performs Content filtering based upon a list of movies supplied
        by the app user.
-
     Parameters
     ----------
     movie_list : list (str)
         Favorite movies chosen by the app user.
     top_n : type
         Number of top recommendations to return to the user.
-
     Returns
     -------
     list (str)
         Titles of the top-n movie recommendations to the user.
-
     """
     # Initializing the empty list of recommended movies
     recommended_movies = []
